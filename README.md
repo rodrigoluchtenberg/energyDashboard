@@ -26,7 +26,6 @@ docker-compose up -d
 **Acesse:**
 - Frontend: http://localhost:3000
 - Backend API: http://localhost:5010
-- Swagger: http://localhost:5010/swagger
 
 ### Parar o projeto
 ```bash
