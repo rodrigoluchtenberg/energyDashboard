@@ -1,5 +1,7 @@
 # Energy Monitor Dashboard
 
+![Energy Dashboard](energyDashboardImg.png)
+
 Sistema de monitoramento de consumo de energia em tempo real desenvolvido com .NET 9 e React.
 
 ## Quick Start com Docker
