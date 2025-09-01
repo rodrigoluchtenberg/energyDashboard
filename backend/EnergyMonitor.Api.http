@@ -1,0 +1,37 @@
+@EnergyMonitor.Api_HostAddress = http://localhost:5010
+
+# Teste da API
+GET {{EnergyMonitor.Api_HostAddress}}/api/test
+Accept: application/json
+
+###
+
+# Obter aparelhos
+GET {{EnergyMonitor.Api_HostAddress}}/api/consumo/aparelhos
+Accept: application/json
+
+###
+
+# Obter consumo atual
+GET {{EnergyMonitor.Api_HostAddress}}/api/consumo/atual
+Accept: application/json
+
+###
+
+# Obter estatísticas
+GET {{EnergyMonitor.Api_HostAddress}}/api/consumo/estatisticas
+Accept: application/json
+
+###
+
+# Status da simulação
+GET {{EnergyMonitor.Api_HostAddress}}/api/simulacao/status
+Accept: application/json
+
+###
+
+# Iniciar simulação
+POST {{EnergyMonitor.Api_HostAddress}}/api/simulacao/iniciar
+Accept: application/json
+
+###

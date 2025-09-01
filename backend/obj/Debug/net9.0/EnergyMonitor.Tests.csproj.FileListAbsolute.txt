@@ -1,0 +1,6 @@
+C:\Users\rodri\OneDrive\Desktop\Energy Dashboard\backend\bin\Debug\net9.0\CoverletSourceRootsMapping_EnergyMonitor.Tests
+C:\Users\rodri\OneDrive\Desktop\Energy Dashboard\backend\obj\Debug\net9.0\EnergyMonitor.Tests.csproj.AssemblyReference.cache
+C:\Users\rodri\OneDrive\Desktop\Energy Dashboard\backend\obj\Debug\net9.0\EnergyMonitor.Tests.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\rodri\OneDrive\Desktop\Energy Dashboard\backend\obj\Debug\net9.0\EnergyMonitor.Tests.AssemblyInfoInputs.cache
+C:\Users\rodri\OneDrive\Desktop\Energy Dashboard\backend\obj\Debug\net9.0\EnergyMonitor.Tests.AssemblyInfo.cs
+C:\Users\rodri\OneDrive\Desktop\Energy Dashboard\backend\obj\Debug\net9.0\EnergyMonitor.Tests.csproj.CoreCompileInputs.cache
