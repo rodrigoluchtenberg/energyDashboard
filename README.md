@@ -67,7 +67,7 @@ yarn start
 - **ASP.NET Core Web API**
 - **Entity Framework Core** com SQLite
 - **SignalR** para comunicação em tempo real
-- **Repository Pattern** e **Dependency Injection**
+- **Repository Pattern** e **Dependency Injection** - Organização de código e injeção automática de dependências.
 - **Cache em memória** para otimização
 
 ### Frontend (React + TypeScript)
