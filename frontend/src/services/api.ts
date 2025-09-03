@@ -31,6 +31,10 @@ export const apiService = {
 
   async deletarAparelho(id: number): Promise<void> {
     await api.delete(`/api/aparelhos/${id}`);
+  },
+
+  async invalidateCache(): Promise<void> {
+    await api.post('/api/consumo/invalidate-cache');
   }
 };
 
