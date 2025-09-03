@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using EnergyMonitor.Business.Interfaces;
 using EnergyMonitor.Models.DTOs;
+using EnergyMonitor.Services;
 
 namespace EnergyMonitor.Controllers
 {
@@ -10,11 +11,19 @@ namespace EnergyMonitor.Controllers
     public class AparelhosController : ControllerBase
     {
         private readonly IAparelhoService _aparelhoService;
+        private readonly IEstatisticasService _estatisticasService;
+        private readonly ICacheService _cacheService;
         private readonly ILogger<AparelhosController> _logger;
 
-        public AparelhosController(IAparelhoService aparelhoService, ILogger<AparelhosController> logger)
+        public AparelhosController(
+            IAparelhoService aparelhoService, 
+            IEstatisticasService estatisticasService,
+            ICacheService cacheService, 
+            ILogger<AparelhosController> logger)
         {
             _aparelhoService = aparelhoService;
+            _estatisticasService = estatisticasService;
+            _cacheService = cacheService;
             _logger = logger;
         }
 
@@ -73,6 +82,14 @@ namespace EnergyMonitor.Controllers
                 }
 
                 var aparelho = await _aparelhoService.CreateFromDtoAsync(createDto);
+                
+                await _cacheService.RemoveAsync("consumo_aparelhos_all");
+                await _cacheService.RemoveAsync("consumo_atual_realtime");
+                await _cacheService.RemoveAsync("consumo_estatisticas_gerais");
+                _estatisticasService.InvalidateCache();
+                
+                _logger.LogInformation("Aparelho criado e cache invalidado: {Nome}", aparelho.Nome);
+                
                 return CreatedAtAction(nameof(GetById), new { id = aparelho.Id }, aparelho);
             }
             catch (Exception ex)
@@ -94,6 +111,14 @@ namespace EnergyMonitor.Controllers
                     return BadRequest(ModelState);
 
                 var aparelho = await _aparelhoService.UpdateFromDtoAsync(id, updateDto);
+                
+                await _cacheService.RemoveAsync("consumo_aparelhos_all");
+                await _cacheService.RemoveAsync("consumo_atual_realtime");
+                await _cacheService.RemoveAsync("consumo_estatisticas_gerais");
+                _estatisticasService.InvalidateCache();
+                
+                _logger.LogInformation("Aparelho {Id} atualizado e cache invalidado", id);
+                
                 return Ok(aparelho);
             }
             catch (ArgumentException)
@@ -115,6 +140,14 @@ namespace EnergyMonitor.Controllers
             try
             {
                 await _aparelhoService.DeleteAsync(id);
+                
+                await _cacheService.RemoveAsync("consumo_aparelhos_all");
+                await _cacheService.RemoveAsync("consumo_atual_realtime");
+                await _cacheService.RemoveAsync("consumo_estatisticas_gerais");
+                _estatisticasService.InvalidateCache();
+                
+                _logger.LogInformation("Aparelho {Id} deletado e cache invalidado", id);
+                
                 return NoContent();
             }
             catch (ArgumentException)
