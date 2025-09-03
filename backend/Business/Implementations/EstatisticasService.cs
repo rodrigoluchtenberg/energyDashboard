@@ -82,16 +82,22 @@ namespace EnergyMonitor.Business.Implementations
 
         private async Task<IEnumerable<ConsumoRealtimeDto>> GetConsumoRealtimeSharedAsync()
         {
-            if (_cachedConsumo != null && (DateTime.Now - _cacheTimestamp).TotalSeconds < 30)
+
+            var seed = (int)(DateTime.Now.Ticks / 10000000); 
+            var cacheKey = $"consumo_realtime_{seed}";
+            
+            if (_cachedConsumo != null && (DateTime.Now - _cacheTimestamp).TotalSeconds < 10)
             {
                 return _cachedConsumo;
             }
 
             var aparelhos = await _aparelhoRepository.GetAllAsync();
+            
+            var randomConsistente = new Random(seed);
 
-            _cachedConsumo = aparelhos.Select(aparelho =>
+            var resultado = aparelhos.Select(aparelho =>
             {
-                var variacao = (_random.NextDouble() * 0.4 - 0.2);
+                var variacao = (randomConsistente.NextDouble() * 0.4 - 0.2);
                 var consumoAtual = Math.Round((double)aparelho.ConsumoMedioWatts * (1 + variacao), 2);
                 
                 var correnteCalculada = CalcularCorrenteComPrecisao(consumoAtual, ConfiguracaoEnergia.Eletrica.TensaoPadrao);
@@ -112,8 +118,9 @@ namespace EnergyMonitor.Business.Implementations
                 };
             }).ToList();
 
+            _cachedConsumo = resultado;
             _cacheTimestamp = DateTime.Now;
-            return _cachedConsumo;
+            return resultado;
         }
 
         private static string GetCorConsumo(double consumoWatts)
@@ -136,6 +143,13 @@ namespace EnergyMonitor.Business.Implementations
 
             var corrente = potenciaWatts / tensaoVolts;
             return Math.Round(corrente, 4);
+        }
+
+        public void InvalidateCache()
+        {
+            _cachedConsumo = null;
+            _cacheTimestamp = DateTime.MinValue;
+            _logger.LogInformation("Cache interno do EstatisticasService invalidado");
         }
 
         private static double CalcularCorrenteTotalComValidacao(IEnumerable<ConsumoRealtimeDto> consumos)

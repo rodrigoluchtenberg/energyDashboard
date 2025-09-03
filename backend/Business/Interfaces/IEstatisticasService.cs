@@ -6,5 +6,6 @@ namespace EnergyMonitor.Business.Interfaces
     {
         Task<EstatisticasDto> GetEstatisticasGeraisAsync();
         Task<IEnumerable<ConsumoRealtimeDto>> GetConsumoRealtimeAsync();
+        void InvalidateCache();
     }
 }
