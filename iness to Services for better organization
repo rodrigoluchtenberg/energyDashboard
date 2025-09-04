@@ -1,0 +1,37 @@
+[33mcommit 7bdf093d3e21d70b56552eb65fd2d282fb8f6258[m
+Author: Rodrigo Luchtenberg <rodrigo.luchtenberg@linedata.com.br>
+Date:   Thu Sep 4 17:25:30 2025 -0300
+
+    refactor: rename Business to Services for better architecture
+
+app/.gitignore
+app/App.tsx
+app/README.md
+app/app.json
+app/assets/adaptive-icon.png
+app/assets/favicon.png
+app/assets/icon.png
+app/assets/splash-icon.png
+app/index.ts
+app/package-lock.json
+app/package.json
+app/src/components/AddDeviceModal.tsx
+app/src/components/CircuitBreakerProgress.tsx
+app/src/components/DeviceList.tsx
+app/src/components/MenuCard.tsx
+app/src/components/MetricCard.tsx
+app/src/constants/index.ts
+app/src/hooks/useEnergyData.ts
+app/src/screens/DashboardScreen.tsx
+app/src/screens/DevicesScreen.tsx
+app/src/screens/StatisticsScreen.tsx
+app/src/screens/SummaryScreen.tsx
+app/src/services/api.ts
+app/src/types/api.ts
+app/src/types/index.ts
+app/src/utils/index.ts
+app/tsconfig.json
+backend/Services/Implementations/AparelhoService.cs
+backend/Services/Implementations/EstatisticasService.cs
+backend/Services/Interfaces/IAparelhoService.cs
+backend/Services/Interfaces/IEstatisticasService.cs
