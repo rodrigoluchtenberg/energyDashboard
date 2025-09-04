@@ -84,6 +84,11 @@ using (var scope = app.Services.CreateScope())
     Console.WriteLine("Banco de dados otimizado e pronto!");
 }
 
+app.UseMiddleware<EnergyMonitor.Middleware.GlobalExceptionMiddleware>();
+app.UseMiddleware<EnergyMonitor.Middleware.RequestLoggingMiddleware>();
+app.UseMiddleware<EnergyMonitor.Middleware.CacheValidationMiddleware>();
+app.UseMiddleware<EnergyMonitor.Middleware.RateLimitingMiddleware>();
+
 app.UseCors();
 app.UseResponseCompression();
 app.UseHttpsRedirection();

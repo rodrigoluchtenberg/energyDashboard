@@ -30,108 +30,76 @@ namespace EnergyMonitor.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAparelhos()
         {
-            try
+            const string cacheKey = "consumo_aparelhos_all";
+            
+            var cachedAparelhos = await _cacheService.GetAsync<object>(cacheKey);
+            if (cachedAparelhos != null)
             {
-                const string cacheKey = "consumo_aparelhos_all";
-                
-                var cachedAparelhos = await _cacheService.GetAsync<object>(cacheKey);
-                if (cachedAparelhos != null)
-                {
-                    Response.Headers.Add("X-Cache", "HIT");
-                    return Ok(cachedAparelhos);
-                }
+                Response.Headers.Add("X-Cache", "HIT");
+                return Ok(cachedAparelhos);
+            }
 
-                var aparelhos = await _aparelhoService.GetAllAsync();
-                
-                await _cacheService.SetAsync(cacheKey, aparelhos, TimeSpan.FromMinutes(1));
-                
-                Response.Headers.Add("X-Cache", "MISS");
-                return Ok(aparelhos);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Erro ao buscar aparelhos");
-                return StatusCode(500, "Erro interno do servidor");
-            }
+            var aparelhos = await _aparelhoService.GetAllAsync();
+            
+            await _cacheService.SetAsync(cacheKey, aparelhos, TimeSpan.FromMinutes(1));
+            
+            Response.Headers.Add("X-Cache", "MISS");
+            return Ok(aparelhos);
         }
 
         [HttpGet("atual")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetConsumoAtual()
         {
-            try
+            const string cacheKey = "consumo_atual_realtime";
+            
+            var cachedConsumo = await _cacheService.GetAsync<object>(cacheKey);
+            if (cachedConsumo != null)
             {
-                const string cacheKey = "consumo_atual_realtime";
-                
-                var cachedConsumo = await _cacheService.GetAsync<object>(cacheKey);
-                if (cachedConsumo != null)
-                {
-                    Response.Headers.Add("X-Cache", "HIT");
-                    return Ok(cachedConsumo);
-                }
+                Response.Headers.Add("X-Cache", "HIT");
+                return Ok(cachedConsumo);
+            }
 
-                var consumo = await _estatisticasService.GetConsumoRealtimeAsync();
-                
-                await _cacheService.SetAsync(cacheKey, consumo, TimeSpan.FromSeconds(5));
-                
-                Response.Headers.Add("X-Cache", "MISS");
-                return Ok(consumo);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Erro ao buscar consumo atual");
-                return StatusCode(500, "Erro interno do servidor");
-            }
+            var consumo = await _estatisticasService.GetConsumoRealtimeAsync();
+            
+            await _cacheService.SetAsync(cacheKey, consumo, TimeSpan.FromSeconds(5));
+            
+            Response.Headers.Add("X-Cache", "MISS");
+            return Ok(consumo);
         }
 
         [HttpGet("estatisticas")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetEstatisticas()
         {
-            try
+            const string cacheKey = "consumo_estatisticas_gerais";
+            
+            var cachedEstatisticas = await _cacheService.GetAsync<object>(cacheKey);
+            if (cachedEstatisticas != null)
             {
-                const string cacheKey = "consumo_estatisticas_gerais";
-                
-                var cachedEstatisticas = await _cacheService.GetAsync<object>(cacheKey);
-                if (cachedEstatisticas != null)
-                {
-                    Response.Headers.Add("X-Cache", "HIT");
-                    return Ok(cachedEstatisticas);
-                }
+                Response.Headers.Add("X-Cache", "HIT");
+                return Ok(cachedEstatisticas);
+            }
 
-                var estatisticas = await _estatisticasService.GetEstatisticasGeraisAsync();
-                
-                await _cacheService.SetAsync(cacheKey, estatisticas, TimeSpan.FromSeconds(5));
-                
-                Response.Headers.Add("X-Cache", "MISS");
-                return Ok(estatisticas);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Erro ao buscar estatísticas");
-                return StatusCode(500, "Erro interno do servidor");
-            }
+            var estatisticas = await _estatisticasService.GetEstatisticasGeraisAsync();
+            
+            await _cacheService.SetAsync(cacheKey, estatisticas, TimeSpan.FromSeconds(5));
+            
+            Response.Headers.Add("X-Cache", "MISS");
+            return Ok(estatisticas);
         }
 
         [HttpPost("invalidate-cache")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> InvalidateCache()
         {
-            try
-            {
-                await _cacheService.RemoveAsync("consumo_aparelhos_all");
-                await _cacheService.RemoveAsync("consumo_atual_realtime");
-                await _cacheService.RemoveAsync("consumo_estatisticas_gerais");
-                
-                _logger.LogInformation("Cache invalidado manualmente");
-                
-                return Ok(new { message = "Cache invalidado com sucesso" });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Erro ao invalidar cache");
-                return StatusCode(500, "Erro interno do servidor");
-            }
+            await _cacheService.RemoveAsync("consumo_aparelhos_all");
+            await _cacheService.RemoveAsync("consumo_atual_realtime");
+            await _cacheService.RemoveAsync("consumo_estatisticas_gerais");
+            
+            _logger.LogInformation("Cache invalidado manualmente");
+            
+            return Ok(new { message = "Cache invalidado com sucesso" });
         }
     }
 }
